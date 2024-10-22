@@ -1,15 +1,23 @@
+#!/bin/bash
+
 if [[ $# == 0 ]];then
-    exit 0
+    echo "You should add some arguments"
+    exit 1
 fi
 
-defaultpassword="soleil1234"
+default_password="soleil1234"
 
-for i in "$@"
+for user in "$@"
 do
-    if getent passwd "$i" > /dev/null 2>&1; then
-        echo "L'utilisateur $i existe déja"
+    if getent passwd "$user" > /dev/null 2>&1; then
+        echo "L'utilisateur $user existe déja"
     else
-        sudo useradd -m "$i" && echo "$i:$defaultpassword" | sudo chpasswd
-        echo "L'utilisateur $i a été créé avec un mot de passe par défaut : $defaultpassword"
+        sudo useradd -m "$user" && echo "$user:$defaultpassword" | sudo chpasswd
+
+        if [$? -eq 0]
+            echo "L'utilisateur $user a été créé avec un mot de passe par défaut : $defaultpassword"
+        else
+            echo "L'utilisateur n'a pas été créé"
+        fi
     fi
 done
