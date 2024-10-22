@@ -5,18 +5,16 @@ if [[ $# -le 0 ]]; then
 	exit 1
 fi 
 
-users=$@
+users="$@"
 password="soleil1234"
-count=1
 
-while [[ $count -le $# ]]; do
-	for users in $users; do
-		sudo useradd $users --create-home -p $password &> /dev/null 
-			if [[ $? = 0 ]]; then
-				echo "Utilisateur $users créé"
-			else	
-				echo "L'utilisateur $users existe déja"
-			fi
-		count=$(($count+1))
-	done
+for users in $users; do
+	sudo useradd $users --create-home -p $password &>/dev/null
+	if [[ $? = 0 ]]; then
+		echo "Utilisateur $users créé"
+	else	
+		echo "L'utilisateur $users existe déja"
+	fi
 done
+
+exit 0
