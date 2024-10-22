@@ -1,19 +1,21 @@
-#! /bin/bash
-# verification of inputs
+#!/bin/bash
+
+# Verification of inputs (arguments)
 if [ "$#" -ne 0 ]; then
-# variables
-users="$*"
-# creation of users
-  for user in $users; do
-     if id "$user" &>/dev/null; then
-		echo "This user exists already"
-	 else
-		adduser --home "/home/$user"
-		echo "$user:soleil1234" | chpasswd
-		echo "$user is created"
-	 fi
-  done
+	# variables
+	users="$@"
+	
+	# creation of users
+  	for user in $users; do
+     		if id "$user" &> /dev/null; then
+			echo "This user already exists"
+	 	else
+			sudo useradd -m "$user" --shell /bin/bash
+			echo "$user:soleil1234" | chpasswd
+			echo "$user is created"
+	 	fi
+  	done
 else
-	    echo "Specify at least one user"
+	echo "Specify at least one user"
         exit 1
 fi
