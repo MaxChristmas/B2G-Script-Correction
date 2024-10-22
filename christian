@@ -1,47 +1,44 @@
 #!/bin/bash
+
 # Vérifier s'il y a des arguments fournis
 if [ $# -eq 0 ]; then
     echo "Usage: $0 user1 user2 user3 ..."
     exit 1
 fi
+
 # Mot de passe par défaut
-DEFAULT_PASSWORD="soleil1234"
+default_password="soleil1234"
+
 # Boucle pour parcourir chaque utilisateur passé en argument
-for USER in "$@"; do
+for user in "$@"; do
     # Vérifier si l'utilisateur existe déjà
-    if id "$USER" &>/dev/null; then
-        echo "L'utilisateur $USER existe déjà. Passer à l'utilisateur 
-suivant."
-    Else
+    if id "$user" &>/dev/null; then
+        echo "L'utilisateur $user existe déjà. Passer à l'utilisateur suivant."
+    else
         # Créer l'utilisateur avec son répertoire home
-        useradd -m -p "$(openssl passwd -1 $DEFAULT_PASSWORD)" "$USER" 
+        useradd -m -p "$(openssl passwd -1 $DEFAULT_PASSWORD)" "$user" 
+        
         # Vérifier si la création a réussi
         if [ $? -eq 0 ]; then
-            echo "L'utilisateur $USER a été créé avec succès."
+            echo "L'utilisateur $user a été créé avec succès."
         else
-            echo "Erreur lors de la création de l'utilisateur $USER."
+            echo "Erreur lors de la création de l'utilisateur $user."
         fi
     fi
 done
 
 
-Ligne hors script.
-Explication :
-1. Le script vérifie s'il y a des arguments fournis (les noms 
-d'utilisateurs).
-2. Pour chaque utilisateur, il vérifie s'il existe déjà avec la 
-commande id.
-3. Si l'utilisateur n'existe pas, il est créé avec un répertoire 
-home et un mot de passe par défaut.
-4. Si l'utilisateur existe déjà, un message est affiché pour 
-passer à l'utilisateur suivant.
-5. openssl passwd -1 est utilisé pour hacher le mot de passe 
-afin de le fournir à la commande useradd.
+# Ligne hors script.
 
-#! /bin/bash
-#Transformer mon txt en script exécutable
-chmod +x create_users.sh
+# Explication :
+# 1. Le script vérifie s'il y a des arguments fournis (les noms d'utilisateurs).
+# 2. Pour chaque utilisateur, il vérifie s'il existe déjà avec la commande id.
+# 3. Si l'utilisateur n'existe pas, il est créé avec un répertoire home et un mot de passe par défaut.
+# 4. Si l'utilisateur existe déjà, un message est affiché pour passer à l'utilisateur suivant.
+# 5. openssl passwd -1 est utilisé pour hacher le mot de passe afin de le fournir à la commande useradd.
 
-#executer mon script en définissant 3 prénoms : user1 user2 
-user3
-./create_users.sh john isabelle edouard
+# Transformer mon txt en script exécutable
+# chmod +x create_users.sh
+
+# executer mon script en définissant 3 prénoms : user1 user2 user3
+# ./create_users.sh john isabelle edouard
