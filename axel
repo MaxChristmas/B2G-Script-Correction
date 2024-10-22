@@ -1,0 +1,15 @@
+if [[ $# == 0 ]];then
+    exit 0
+fi
+
+defaultpassword="soleil1234"
+
+for i in "$@"
+do
+    if getent passwd "$i" > /dev/null 2>&1; then
+        echo "L'utilisateur $i existe déja"
+    else
+        sudo useradd -m "$i" && echo "$i:$defaultpassword" | sudo chpasswd
+        echo "L'utilisateur $i a été créé avec un mot de passe par défaut : $defaultpassword"
+    fi
+done

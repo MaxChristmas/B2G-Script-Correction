@@ -1,0 +1,23 @@
+#!/bin/bash
+#verifier si utilisateur en argument
+if [[ $# -eq 0 ]]; then
+	echo "il n'y a pas d'utilisateurs en argument de commande script"
+	exit 1
+fi
+# boucle pour les utilisateurs
+for utilisateur in $*;
+do
+	#verifier si id utilisateur existe
+	if id "$utilisateur" &>/dev/null;
+	then
+		echo "l'utilisateur "$utilisateur" existe déjà"
+	else
+		#creer l'utilisateur avec repertoire home (-m) et mot de passe par defaut soleil1234"
+		# insatll de whois pour commande mkpasswd
+		sudo useradd -m "$utilisateur" -p $(mkpasswd soleil1234)
+		# on verifie si la sortie de la derniere commande: si 0, cde ok
+		if [ $? -eq 0 ]; then
+			echo "l'utilisateur est crée"
+		fi
+	fi
+done
