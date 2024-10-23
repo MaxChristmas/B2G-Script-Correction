@@ -1,25 +1,31 @@
 #!/bin/bash
 
+user="gaetan"
+
 # check if there's an argument to begin with
-if [[ $@ = 0 ]]; then
+if [[ $# = 0 ]]; then
     echo "Pas d'utilisateur fourni."
     exit 1
 fi
 
-# loop through each argument
-for newuser in "$@"; do
-    # check already existing users
-    if [[ id "$newuser" &>/dev/null ]]; then
-        echo "L'utilisateur '$newuser' existe déjà."
+# Loop through each argument
+for newUser in "$@"; do
+
+    # Check if user already exists
+    # CMD id => display user'uid and gid
+    if [[ id "$newUser" &>/dev/null ]]; then
+        echo "L'utilisateur '$newUser' existe déjà."
     else
-        # create user and default password
-        sudo useradd -m -p "soleil1234" "$newuser"
+        # Create user and default password (Warning: please use encrypted password instead of plain text)
+        sudo useradd -m -p "soleil1234" "$newUser"
         
         # Check if creation successful
         if [[ $? = 0 ]]; then
-            echo "L'utilisateur '$newuser' a ete cree avec succes."
+            echo "L'utilisateur '$newUser' a ete cree avec succes."
         else
-            echo "Erreur lors de la creation de l'utilisateur '$newuser'."
+            echo "Erreur lors de la creation de l'utilisateur '$newUser'."
         fi
     fi
 done
+
+exit 0
