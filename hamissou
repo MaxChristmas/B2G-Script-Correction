@@ -1,0 +1,20 @@
+#!/bin/bash
+
+#vérifier si un argument a été passé
+
+if [ $# -eq 0 ]; then 
+	echo "erreur : pas d'arguement"
+fi
+
+# Vérification de l'existance d'un utilisateur/Création d'utilisateurs
+
+for usernames in $*; do
+	if id "$usernames" &>/dev/null; then
+	       echo "l'utilisateur existe déjà"
+       else 
+	       sudo useradd -m $usernames && echo "$usernames:soleil1234" | sudo chpasswd	# Création de l'utilisateur avec un répertoire personnel et un mot de passe par défaut.
+		if [ $? -eq 0 ]; then 
+			echo " $usernames créé avec succès"
+		fi
+	fi
+done
