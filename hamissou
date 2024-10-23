@@ -3,18 +3,21 @@
 #vérifier si un argument a été passé
 
 if [ $# -eq 0 ]; then 
-	echo "erreur : pas d'arguement"
+	echo "erreur : pas d'argument"
+  exit 1
 fi
 
-# Vérification de l'existance d'un utilisateur/Création d'utilisateurs
-
-for usernames in $*; do
-	if id "$usernames" &>/dev/null; then
-	       echo "l'utilisateur existe déjà"
-       else 
-	       sudo useradd -m $usernames && echo "$usernames:soleil1234" | sudo chpasswd	# Création de l'utilisateur avec un répertoire personnel et un mot de passe par défaut.
-		if [ $? -eq 0 ]; then 
-			echo " $usernames créé avec succès"
-		fi
+# Boucle sur l'ensemble des arguments
+for username in $*; do
+  # Vérification de l'existance d'un utilisateur/Création d'utilisateurs
+	if id "$username" &>/dev/null; then
+	      echo "l'utilisateur existe déjà"
+  else 
+	      sudo useradd -m $username && echo "$username:soleil1234" | sudo chpasswd	# Création de l'utilisateur avec un répertoire personnel et un mot de passe par défaut.
+        if [ $? -eq 0 ]; then 
+              echo " $username créé avec succès"
+        fi
 	fi
 done
+
+exit 0
